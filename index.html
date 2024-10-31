@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -43,7 +43,6 @@
   </body>
 
   <script>
-
     let positions = []
     const draw = () => {
       const canvas = document.getElementById("canvas")
@@ -56,7 +55,7 @@
       ctx.strokeStyle = "red"
       ctx.beginPath()
       ctx.moveTo(0, 0)
-      ctx.lineTo(300, Math.random()*50)
+      ctx.lineTo(300, Math.random() * 50)
       ctx.stroke()
       ctx.beginPath()
       ctx.moveTo(0, 0)
@@ -64,9 +63,9 @@
       ctx.stroke()
 
       ctx.fillStyle = "white"
-      ctx.beginPath();
-      ctx.arc(95, 50, 40, 0, 2 * Math.PI);
-      ctx.fill();
+      ctx.beginPath()
+      ctx.arc(95, 50, 40, 0, 2 * Math.PI)
+      ctx.fill()
     }
 
     const add = () => {
@@ -79,9 +78,9 @@
     const reset = () => {
       console.log("reset")
     }
-    window.addEventListener('resize', draw)
+    window.addEventListener("resize", draw)
     document.getElementById("addbtn").addEventListener("click", add)
     document.getElementById("resetbtn").addEventListener("click", reset)
     window.addEventListener("load", draw)
-</script>
+  </script>
 </html>
