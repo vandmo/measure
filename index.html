@@ -20,7 +20,7 @@
       }
       #footer {
         flex-shrink: 0;
-        border: 0.1rem solid;
+        border: 2px solid;
         color: white;
         display: flex;
         flex-wrap: wrap;
@@ -60,7 +60,7 @@
       const canvas = document.getElementById("canvas")
       const footer = document.getElementById("footer")
       const W = window.innerWidth
-      const H = window.innerHeight - footer.offsetHeight
+      const H = window.innerHeight - footer.offsetHeight - 4
       canvas.width = W
       canvas.height = H
       const ctx = canvas.getContext("2d")
@@ -75,7 +75,7 @@
           current.coords.latitude,
           current.coords.longitude,
         )
-        text = `${distance}m`
+        text = `${distance.toFixed(1)}m`
       }
       ctx.font = "3rem serif"
       ctx.fillStyle = "red"
