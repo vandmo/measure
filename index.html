@@ -84,10 +84,17 @@
       ctx.fillText(text, W / 2, H / 2)
     }
 
-    navigator.geolocation.watchPosition((position) => {
-      current = position
-      draw()
-    })
+    setInterval(() => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          current = position
+          draw()
+        },
+        null,
+        { enableHighAccuracy: true },
+      )
+    }, 3000)
+
     const setStart = () => {
       start = current
       draw()
