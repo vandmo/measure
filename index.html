@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Measure</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+      #canvas {
+        flex: 1 0 auto;
+        background-color: black;
+      }
+      footer {
+        flex-shrink: 0;
+        background-color: teal;
+        border: 1px solid;
+        color: white;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      button {
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <footer id="footer">
+      <button id="addbtn">Add</button>
+      <button id="resetbtn">Reset</button>
+      <button>Rfweffeweset</button>
+      <button>Rfweffeweset</button>
+      <button>Rfweffeweset</button>
+    </footer>
+  </body>
+
+  <script>
+
+    let positions = []
+    const draw = () => {
+      const canvas = document.getElementById("canvas")
+      const footer = document.getElementById("footer")
+      const W = window.innerWidth
+      const H = window.innerHeight - footer.offsetHeight
+      canvas.width = W
+      canvas.height = H
+      const ctx = canvas.getContext("2d")
+      ctx.strokeStyle = "red"
+      ctx.beginPath()
+      ctx.moveTo(0, 0)
+      ctx.lineTo(300, Math.random()*50)
+      ctx.stroke()
+      ctx.beginPath()
+      ctx.moveTo(0, 0)
+      ctx.lineTo(W, H)
+      ctx.stroke()
+
+      ctx.fillStyle = "white"
+      ctx.beginPath();
+      ctx.arc(95, 50, 40, 0, 2 * Math.PI);
+      ctx.fill();
+    }
+
+    const add = () => {
+      console.log("add")
+      navigator.geolocation.getCurrentPosition((position) => {
+        console.log(JSON.stringify(position))
+        console.log(position.coords.latitude, position.coords.longitude)
+      })
+    }
+    const reset = () => {
+      console.log("reset")
+    }
+    window.addEventListener('resize', draw)
+    document.getElementById("addbtn").addEventListener("click", add)
+    document.getElementById("resetbtn").addEventListener("click", reset)
+    window.addEventListener("load", draw)
+</script>
+</html>
