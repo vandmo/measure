@@ -9,6 +9,7 @@
       body {
         height: 100%;
         margin: 0;
+        background-color: black;
       }
       body {
         display: flex;
@@ -16,34 +17,45 @@
       }
       #canvas {
         flex: 1 0 auto;
-        background-color: black;
       }
-      footer {
+      #footer {
         flex-shrink: 0;
-        background-color: teal;
-        border: 1px solid;
+        border: 0.1rem solid;
         color: white;
         display: flex;
         flex-wrap: wrap;
       }
       button {
-        margin: 10px;
+        margin: 0.3rem;
+        flex-grow: 1;
+        min-height: 3rem;
       }
     </style>
   </head>
   <body>
     <canvas id="canvas"></canvas>
     <footer id="footer">
-      <button id="addbtn">Add</button>
-      <button id="resetbtn">Reset</button>
-      <button>Rfweffeweset</button>
-      <button>Rfweffeweset</button>
-      <button>Rfweffeweset</button>
+      <button id="startbtn">Set Start Position</button>
     </footer>
   </body>
 
   <script>
-    let positions = []
+    const cosineDistanceBetweenPoints = (lat1, lon1, lat2, lon2) => {
+      const R = 6371e3
+      const p1 = (lat1 * Math.PI) / 180
+      const p2 = (lat2 * Math.PI) / 180
+      const deltaP = p2 - p1
+      const deltaLon = lon2 - lon1
+      const deltaLambda = (deltaLon * Math.PI) / 180
+      const a =
+        Math.sin(deltaP / 2) * Math.sin(deltaP / 2) +
+        Math.cos(p1) * Math.cos(p2) * Math.sin(deltaLambda / 2) * Math.sin(deltaLambda / 2)
+      const d = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * R
+      return d
+    }
+    let start = null
+    let current = null
+
     const draw = () => {
       const canvas = document.getElementById("canvas")
       const footer = document.getElementById("footer")
@@ -52,35 +64,36 @@
       canvas.width = W
       canvas.height = H
       const ctx = canvas.getContext("2d")
-      ctx.strokeStyle = "red"
-      ctx.beginPath()
-      ctx.moveTo(0, 0)
-      ctx.lineTo(300, Math.random() * 50)
-      ctx.stroke()
-      ctx.beginPath()
-      ctx.moveTo(0, 0)
-      ctx.lineTo(W, H)
-      ctx.stroke()
 
-      ctx.fillStyle = "white"
-      ctx.beginPath()
-      ctx.arc(95, 50, 40, 0, 2 * Math.PI)
-      ctx.fill()
+      let text
+      if (start === null) {
+        text = "Click the button!"
+      } else {
+        const distance = cosineDistanceBetweenPoints(
+          start.coords.latitude,
+          start.coords.longitude,
+          current.coords.latitude,
+          current.coords.longitude,
+        )
+        text = `${distance}m`
+      }
+      ctx.font = "3rem serif"
+      ctx.fillStyle = "red"
+      ctx.textAlign = "center"
+      ctx.textBaseline = "middle"
+      ctx.fillText(text, W / 2, H / 2)
     }
 
-    const add = () => {
-      console.log("add")
-      navigator.geolocation.getCurrentPosition((position) => {
-        console.log(JSON.stringify(position))
-        console.log(position.coords.latitude, position.coords.longitude)
-      })
-    }
-    const reset = () => {
-      console.log("reset")
+    navigator.geolocation.watchPosition((position) => {
+      current = position
+      draw()
+    })
+    const setStart = () => {
+      start = current
+      draw()
     }
     window.addEventListener("resize", draw)
-    document.getElementById("addbtn").addEventListener("click", add)
-    document.getElementById("resetbtn").addEventListener("click", reset)
+    document.getElementById("startbtn").addEventListener("click", setStart)
     window.addEventListener("load", draw)
   </script>
 </html>
